@@ -30,9 +30,9 @@ import org.joda.time.LocalDate;
 * @author Alessio Stalla       - alessio.stalla@manydesigns.com
 */
 public class AbstractDay {
-    final LocalDate dayStart;
-    final LocalDate dayEnd;
-    final Interval dayInterval;
+    protected final LocalDate dayStart;
+    protected final LocalDate dayEnd;
+    protected final Interval dayInterval;
 
     public AbstractDay(LocalDate dayStart, LocalDate dayEnd) {
         this.dayStart = dayStart;

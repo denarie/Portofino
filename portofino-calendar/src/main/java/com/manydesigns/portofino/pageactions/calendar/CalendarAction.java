@@ -20,6 +20,14 @@
 
 package com.manydesigns.portofino.pageactions.calendar;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.manydesigns.elements.ElementsThreadLocals;
 import com.manydesigns.elements.forms.Form;
 import com.manydesigns.elements.forms.FormBuilder;
@@ -32,17 +40,10 @@ import com.manydesigns.portofino.pageactions.annotations.ScriptTemplate;
 import com.manydesigns.portofino.pageactions.calendar.configuration.CalendarConfiguration;
 import com.manydesigns.portofino.security.AccessLevel;
 import com.manydesigns.portofino.security.RequiresPermissions;
+
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Interval;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Paolo Predonzani     - paolo.predonzani@manydesigns.com
@@ -68,6 +69,7 @@ public class CalendarAction extends AbstractPageAction {
 
     protected MonthView monthView;
     protected AgendaView agendaView;
+	protected WeekView weekView;
     protected DateTime referenceDateTime = new DateTime();
     protected final List<Calendar> calendars = new ArrayList<Calendar>();
     protected final List<Event> events = new ArrayList<Event>();
@@ -141,6 +143,8 @@ public class CalendarAction extends AbstractPageAction {
     public Resolution execute() {
         if("agenda".equals(calendarViewType)) {
             return agendaView();
+		} else if("week".equals(calendarViewType)) {
+			return weekView();
         } else {
             return monthView();
         }
@@ -173,6 +177,18 @@ public class CalendarAction extends AbstractPageAction {
         return new ForwardResolution("/m/calendar/calendar.jsp");
     }
 
+	public Resolution weekView() {
+        calendarViewType = "week";
+        weekView = new WeekView(referenceDateTime);
+        loadObjects(weekView.getWeekInterval());
+
+        for(Event event : events) {
+        	weekView.addEvent(event);
+        }
+        weekView.sortEvents();
+        return new ForwardResolution("/m/calendar/calendar.jsp");
+    }
+	
     public Resolution nextMonth() {
         referenceDateTime = referenceDateTime.plusMonths(1).withDayOfMonth(1).withTime(0, 0, 0, 0);
         return execute();
@@ -193,6 +209,16 @@ public class CalendarAction extends AbstractPageAction {
         return execute();
     }
 
+	public Resolution nextWeek() {
+        referenceDateTime = referenceDateTime.plusWeeks(1).withDayOfWeek(1).withTime(0, 0, 0, 0);
+        return execute();
+    }
+
+    public Resolution prevWeek() {
+        referenceDateTime = referenceDateTime.minusWeeks(1).withDayOfWeek(1).withTime(0, 0, 0, 0);
+        return execute();
+    }
+	
     public Resolution today() {
         referenceDateTime = new DateTime();
         return execute();
@@ -214,6 +240,9 @@ public class CalendarAction extends AbstractPageAction {
         return agendaView;
     }
 
+	public WeekView getWeekView() {
+        return weekView;
+    }
     //**************************************************************************
     // Getters/setters
     //**************************************************************************

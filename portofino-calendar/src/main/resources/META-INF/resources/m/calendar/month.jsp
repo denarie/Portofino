@@ -117,6 +117,10 @@
             <span class="glyphicon glyphicon-book"></span>
             <fmt:message key="agenda" />
         </button>
+        <button type="submit" name="weekView" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-calendar"></span>
+            <fmt:message key="week" />
+        </button>
     </div>
     <div>
         <%

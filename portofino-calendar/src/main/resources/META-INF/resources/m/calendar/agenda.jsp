@@ -68,6 +68,10 @@
             <span class="glyphicon glyphicon-calendar"></span>
             <fmt:message key="month" />
         </button>
+        <button type="submit" name="weekView" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-calendar"></span>
+            <fmt:message key="week" />
+        </button>
     </div>
     <div>
         <%
