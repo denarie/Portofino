@@ -6,12 +6,23 @@
     <parent>
         <groupId>com.manydesigns</groupId>
         <artifactId>portofino</artifactId>
-        <version>4.2.3</version>
+        <version>4.2.3.1</version>
     </parent>
     <artifactId>portofino-mail</artifactId>
     <packaging>jar</packaging>
     <url>http://www.manydesigns.com/</url>
     <dependencies>
+            	<!-- API, java.xml.bind module, ergaenzt SD wegen Java 11 -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.2</version>
+		</dependency>        
         <dependency>
             <groupId>com.manydesigns</groupId>
             <artifactId>elements</artifactId>
